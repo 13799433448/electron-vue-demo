@@ -56,7 +56,7 @@
 export default {
   data() {
     return {
-      curTime: "",
+      curTime: '',
       tableData: [],
     };
   },
@@ -66,28 +66,24 @@ export default {
   },
   methods: {
     getDate() {
-      let date = new Date();
-      let year = date.getFullYear();
+      const date = new Date();
+      const year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
-      month = month < 10 ? "0" + month : month;
-      day = day < 10 ? "0" + day : day;
-      this.curTime = year + "-" + month + "-" + day;
+      month = month < 10 ? `0${month}` : month;
+      day = day < 10 ? `0${day}` : day;
+      this.curTime = `${year}-${month}-${day}`;
     },
     query() {
-      const params = this.curTime ? { date: this.curTime } : {}
+      const params = this.curTime ? { date: this.curTime } : {};
       this.$db.history.find(params, (err, doc) => {
         if (err) {
           return;
         }
-        this.tableData = doc.map((item) => {
-          return {
-            ...item,
-            total: item.count.reduce((total, num) => {
-              return total + num;
-            }),
-          };
-        });
+        this.tableData = doc.map(item => ({
+          ...item,
+          total: item.count.reduce((total, num) => total + num),
+        }));
       });
     },
   },

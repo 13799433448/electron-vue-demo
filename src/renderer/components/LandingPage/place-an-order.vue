@@ -100,7 +100,7 @@ export default {
       tableData: [],
       datas: [], // 已经下单的数据
       num: 0,
-      curTime: "",
+      curTime: '',
     };
   },
   mounted() {
@@ -112,13 +112,13 @@ export default {
       this.query();
     },
     getDate() {
-      let date = new Date();
-      let year = date.getFullYear();
+      const date = new Date();
+      const year = date.getFullYear();
       let month = date.getMonth() + 1;
       let day = date.getDate();
-      month = month < 10 ? "0" + month : month;
-      day = day < 10 ? "0" + day : day;
-      this.curTime = year + "-" + month + "-" + day;
+      month = month < 10 ? `0${month}` : month;
+      day = day < 10 ? `0${day}` : day;
+      this.curTime = `${year}-${month}-${day}`;
     },
     query() {
       this.$db.keywords
@@ -131,9 +131,12 @@ export default {
           this.tableData = docs;
         });
     },
-    remove() {
-      this.$db.keywords.remove({}, { multi: true }, (err, numRemoved) => {});
-    },
+    // remove() {
+    //   this.$db.keywords.remove({}, { multi: true }, (err) => {
+    //     if (err) {
+    //     }
+    //   });
+    // },
     add(value) {
       const has = this.datas.includes(value);
       if (!has) {
@@ -141,13 +144,13 @@ export default {
         return;
       }
       this.$message({
-        message: "已经添加了该数值了",
-        type: "warning",
+        message: '已经添加了该数值了',
+        type: 'warning',
       });
     },
-    removeHistory() {
-      this.$db.history.remove({}, { multi: true }, (err, numRemoved) => {});
-    },
+    // removeHistory() {
+    //   this.$db.history.remove({}, { multi: true }, (err, numRemoved) => {});
+    // },
     // 下单
     placeAnOrder() {
       this.datas.forEach((item) => {
@@ -156,43 +159,43 @@ export default {
     },
     async find(key) {
       await this.$db.history.find(
-        { date: this.curTime, key: key },
+        { date: this.curTime, key },
         (err, doc) => {
           if (err) {
-            res = false;
+            return;
           }
           if (doc.length > 0) {
             this.update(key);
           } else {
             this.insert(key);
           }
-        }
+        },
       );
     },
     insert(key) {
       this.$db.history.insert(
-        { date: this.curTime, key: key, count: [this.num] },
-        (err, res) => {
+        { date: this.curTime, key, count: [this.num] },
+        (err) => {
           if (err) {
             return;
           }
           this.datas = [];
           this.num = 0;
-        }
+        },
       );
     },
     update(key) {
       this.$db.history.update(
-        { date: this.curTime, key: key },
+        { date: this.curTime, key },
         { $push: { count: this.num } },
         {},
-        (err, res) => {
+        (err) => {
           if (err) {
             return;
           }
           this.datas = [];
           this.num = 0;
-        }
+        },
       );
     },
     deleteItem(index) {

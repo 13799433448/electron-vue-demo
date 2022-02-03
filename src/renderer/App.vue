@@ -6,8 +6,8 @@
 
 <script>
   export default {
-    name: 'my-project'
-  }
+    name: 'electron-vue-demo',
+  };
 </script>
 
 <style>

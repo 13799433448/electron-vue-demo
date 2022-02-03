@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import data from "../static/data";
-import first from "./LandingPage/place-an-order.vue";
-import second from "./LandingPage/history.vue";
-import third from "./LandingPage/config.vue";
+import data from '../static/data';
+import first from './LandingPage/place-an-order.vue';
+import second from './LandingPage/history.vue';
+import third from './LandingPage/config.vue';
 export default {
-  name: "landing-page",
+  name: 'landing-page',
   components: {
     first,
     second,
@@ -28,11 +28,11 @@ export default {
   },
   data() {
     return {
-      activeName: "first",
+      activeName: 'first',
     };
   },
   mounted() {
-    this.query()
+    this.query();
   },
   methods: {
     query() {
@@ -40,19 +40,21 @@ export default {
         if (err) {
           return;
         }
-        if(!doc || !doc.length){
-          this.init()
+        if (!doc || !doc.length) {
+          this.init();
         }
       });
     },
     init() {
-      this.$db.keywords.insert(data, (err, doc) => {
+      this.$db.keywords.insert(data, (err) => {
         if (err) {
-          return;
+          this.$message({
+            message: '初始化失败',
+            type: 'warning',
+          });
         }
-        console.log(doc)
       });
-    }
+    },
   },
 };
 </script>

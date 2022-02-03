@@ -18,7 +18,6 @@ const doneLog = chalk.bgGreen.white(' DONE ') + ' '
 const errorLog = chalk.bgRed.white(' ERROR ') + ' '
 const okayLog = chalk.bgBlue.white(' OKAY ') + ' '
 const isCI = process.env.CI || false
-const Multispinner = require('multispinner')
 
 if (process.env.BUILD_TARGET === 'clean') clean()
 else if (process.env.BUILD_TARGET === 'web') web()
@@ -35,15 +34,15 @@ async function build () {
 
   del.sync(['dist/electron/*', '!.gitkeep'])
 
-  const tasks = ['main', 'renderer']
-  const m = new Multispinner(tasks, {
+  const tasks1 = ['main', 'renderer']
+  const m = new Multispinner(tasks1, {
     preText: 'building',
     postText: 'process'
   })
 
   let results = ''
 
-  const tasksed = new Listr(
+  const tasks = new Listr(
     [
       {
         title: 'building master process',
@@ -75,7 +74,7 @@ async function build () {
     { concurrent: 2 }
   )
 
-  await tasksed
+  await tasks
     .run()
     .then(() => {
       process.stdout.write('\x1B[2J\x1B[0f')
