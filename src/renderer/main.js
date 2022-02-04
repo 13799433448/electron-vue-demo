@@ -4,11 +4,14 @@ import axios from 'axios';
 import App from './App';
 import router from './router';
 import store from './store';
+
+
 import db from './datastore';
+
 // eslint-disable-next-line import/first
 import ElementUI from 'element-ui'; // 新添加
 // eslint-disable-next-line import/first
-import 'element-ui/lib/theme-chalk/index.css'; // 新添加
+import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI); // 新添加
 

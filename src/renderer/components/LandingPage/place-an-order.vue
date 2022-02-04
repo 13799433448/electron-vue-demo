@@ -10,6 +10,11 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" align="center"> </el-table-column>
         <el-table-column prop="name" label="属相" width="180" align="center">
+          <template slot-scope="{ row }">
+            <el-button size="mini"  type="primary" icon="el-icon-plus"  @click="addAll(row)">
+               {{ row.name }}
+            </el-button>
+          </template>
         </el-table-column>
         <el-table-column prop="date1" label="码表" width="180" align="center">
           <template slot-scope="{ row }">
@@ -83,9 +88,12 @@
         v-model="num"
         label="描述文字"
         size="mini"
-        :min="0"
+        :min="1"
         :precision="0"
       ></el-input-number>
+      <el-button type="danger" size="mini" @click="clear">
+        清 空
+      </el-button>
       <el-button type="primary" size="mini" @click="placeAnOrder">
         下 注
       </el-button>
@@ -148,6 +156,14 @@ export default {
         type: 'warning',
       });
     },
+    // 全部添加
+    addAll(row) {
+      [1, 2, 3, 4, 5].forEach((item) => {
+        if (row[`date${item}`] !== '' && row[`date${item}`] !== undefined) {
+          this.datas.push(row[`date${item}`]);
+        }
+      });
+    },
     // removeHistory() {
     //   this.$db.history.remove({}, { multi: true }, (err, numRemoved) => {});
     // },
@@ -156,6 +172,9 @@ export default {
       this.datas.forEach((item) => {
         this.find(item);
       });
+    },
+    clear() {
+      this.datas = [];
     },
     async find(key) {
       await this.$db.history.find(
@@ -212,6 +231,8 @@ export default {
   height: 550px;
   overflow: hidden;
   margin: 20px 10px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .btn-txt {
   margin: 10px;
